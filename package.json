@@ -1,0 +1,28 @@
+{
+  "name": "playwright-visual-testing",
+  "version": "1.0.0",
+  "description": "Visual regression testing setup with Playwright",
+  "scripts": {
+    "test": "npx playwright test",
+    "visual:baseline": "node utils/generate-baseline.js",
+    "visual:test": "node utils/compare-images.js && npm run test"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.35.1",
+    "pixelmatch": "^5.3.0",
+    "pngjs": "^7.0.0",
+    "fs-extra": "^11.1.1",
+    "chalk": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.2",
+    "typescript": "^5.1.6"
+  },
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -7,10 +7,10 @@ const chalk = require('chalk');
 const THRESHOLD = 100; // Maximum number of pixels that can be different
 
 async function compareImages() {
-  console.log(chalk.blue('Comparing screenshots...'));
+  console.log(chalk.blue('Comparing staging vs production screenshots...'));
   
-  const baselineDir = path.join(process.cwd(), 'screenshots', 'baseline');
-  const currentDir = path.join(process.cwd(), 'screenshots', 'current');
+  const stagingDir = path.join(process.cwd(), 'screenshots', 'staging');
+  const productionDir = path.join(process.cwd(), 'screenshots', 'production');
   const diffDir = path.join(process.cwd(), 'screenshots', 'diff');
   
   // Ensure diff directory exists
@@ -18,28 +18,28 @@ async function compareImages() {
   
   let hasFailures = false;
   
-  const baselineFiles = await fs.readdir(baselineDir);
+  const stagingFiles = await fs.readdir(stagingDir);
   
-  for (const file of baselineFiles) {
-    const baselinePath = path.join(baselineDir, file);
-    const currentPath = path.join(currentDir, file);
+  for (const file of stagingFiles) {
+    const stagingPath = path.join(stagingDir, file);
+    const productionPath = path.join(productionDir, file);
     const diffPath = path.join(diffDir, file);
     
-    // Skip if current screenshot doesn't exist
-    if (!await fs.pathExists(currentPath)) {
-      console.log(chalk.yellow(`⚠ Current screenshot missing for ${file}`));
+    // Skip if production screenshot doesn't exist
+    if (!await fs.pathExists(productionPath)) {
+      console.log(chalk.yellow(`⚠ Production screenshot missing for ${file}`));
       continue;
     }
     
-    const baseline = PNG.sync.read(await fs.readFile(baselinePath));
-    const current = PNG.sync.read(await fs.readFile(currentPath));
+    const staging = PNG.sync.read(await fs.readFile(stagingPath));
+    const production = PNG.sync.read(await fs.readFile(productionPath));
     
-    const {width, height} = baseline;
+    const {width, height} = staging;
     const diff = new PNG({width, height});
     
     const pixelDiff = pixelmatch(
-      baseline.data,
-      current.data,
+      staging.data,
+      production.data,
       diff.data,
       width,
       height,

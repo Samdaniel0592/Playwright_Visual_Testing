@@ -1,3 +1,5 @@
+// DEPRECATED: Baseline screenshots are no longer used in this workflow. This file can be deleted.
+
 const { chromium } = require('@playwright/test');
 const path = require('path');
 const fs = require('fs-extra');
